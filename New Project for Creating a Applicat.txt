@@ -1,0 +1,12 @@
+New Project for Creating a Application
+
+
+1.Create New Home Page
+
+2.Login/Registration Page
+
+3.Message Page
+
+4.Snap Page
+
+5.reels Page
