@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd" >
+<suite name="default package" verbose="2"  thread-count="2">
+<test name="Firstrun">
+<classes>
+<class name="testNg.FirstTestNG"> 
+</class>
+<class name="testNg.OpenWebsites"></class>
+<class name="testNg.WebDriver"></class>
+</classes>
+</test>
+</suite>
