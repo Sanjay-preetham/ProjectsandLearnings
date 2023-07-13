@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Registration</title>
+<link rel="stylesheet" type="text/css" href="/src/main/webapp/CSS/register.css"/> 
+</head>
+<body>
+	<div class="registerDiv">
+
+	<div class="container">
+		<h1 class="regTitle">Register</h1>
+		<p class="formMsg">Please fill in this form to create an account.</p>
+		<hr>
+		<label class="FirstName"><b>First Name </b></label> <input type="text"
+			class="frBox" placeholder="Enter First Name" id="firstName" autofocus>
+		<br> <br> <span id="firstNameError" style="color: red;"></span>
+
+		
+		<label class="LastName"><b>Last Name </b></label> 
+		<input type="text" placeholder="Enter Last Name" id="lastName"><br> <span
+			id="lastNameError" style="color: red;"></span><br>
+
+		
+		<label class="phoneNumer"><b>Phone Number </b></label> 
+		<input type="text" placeholder="Enter Phone Numbers" id="phnNum" required><br>
+		<br> <span id="phnNumError" style="color: red;"></span><br>
+
+	
+		<label class="email"><b>Email </b></label> 
+		<input type="text" placeholder="Enter Email" id="emailid" required><br> <br>
+		<span id="emailIdError" style="color: red;"></span><br>
+
+
+		<label class="Password"><b>Password </b></label><br>
+		<input type="password" id="myInput" placeholder="Enter Password" required> 
+			<input class="showPassword" type="checkbox" onclick="myFunction()">
+			<br><label><b>Show Password</b></label>
+
+         <br>
+		<button type="submit" class="registerbtn"
+			onclick="registerUserEvent(event)">Register</button>
+	</div>
+
+	<div id="errorDiv" style="color: red; margin-top: 10px;"></div>
+	</div>
+	<div class=" container2">
+		<img src="image1.jpg" alt="registartionImage">
+
+	</div>
+	<script>
+		function registerUser() {
+			
+			const firstName = document.getElementById("firstName").value;
+			const lastName = document.getElementById("lastName").value;
+			const phoneNumber = document.getElementById("phnNum").value;
+			const email = document.getElementById("emailid").value;
+			const password = document.getElementById("myInput").value;
+
+			const jsonObject = {
+				fname: firstName,
+				lname: lastName,
+				phnNum: phoneNumber,
+				emailid: email,
+				password: password
+			};
+			let param = JSON.stringify(jsonObject);
+			
+			const xhr = new XMLHttpRequest();
+			xhr.onreadystatechange = function() {
+				if (xhr.readyState === XMLHttpRequest.DONE) {
+					if (xhr.status === 200) {
+						let data = JSON.parse(xhr.responseText);
+						window.location.href = data.redirectURL;
+					} else {
+						let errorDiv = document.getElementById("errorDiv");
+						errorDiv.innerText = "Invalid email or password.";
+					}
+				}
+			};
+			xhr.open('POST', '/register', true);
+			xhr.setRequestHeader('Content-Type', 'application/json');
+			xhr.send(param);
+		}
+
+		function myFunction() {
+			const passwordInput = document.getElementById("myInput");
+			if (passwordInput.type === "password") {
+				passwordInput.type = "text";
+			} else {
+				passwordInput.type = "password";
+			}
+		}
+
+		function validateFirstName() {
+			const firstNameInput = document.getElementById("firstName");
+			const firstNameError = document.getElementById("firstNameError");
+			const firstName = firstNameInput.value;
+			const regex = /^([A-Za-z]+(\s[A-Za-z]+)?)?$/;
+
+
+			if (!regex.test(firstName)) {
+				firstNameError.innerText = "Invalid Format.";
+				firstNameInput.classList.add("error-input");
+			} else {
+				firstNameError.innerText = "";
+				firstNameInput.classList.remove("error-input");
+			}
+		}
+		
+		function validateLastName() {
+			const lastNameInput = document.getElementById("lastName");
+			const lastNameError = document.getElementById("lastNameError");
+			const lastName = lastNameInput.value;
+			const regex = /^([A-Za-z]+(\s[A-Za-z]+)?)?$/;
+    		
+
+			if (!regex.test(lastName)) {
+				lastNameError.innerText = "Invalid Format.";
+				
+				lastNameInput.classList.add("error-input");
+			} else {
+				lastNameError.innerText = "";
+				
+				lastNameInput.classList.remove("error-input");
+			}
+		}
+		
+		function validatephnNum(){
+			const phnNumInput=document.getElementById("phnNum");
+			const phnNumError=document.getElementById("phnNumError");
+			const phnNum=phnNumInput.value;
+			const phoneRegex = /^\d{10}$/;
+    
+            if(!phoneRegex.test(phnNum)){
+            	phnNumError.innerText="Invalid Mobile Number";
+            	
+            	phnNumInput.classList.add("error-input");
+            }
+            else{
+            	phnNumError.innerText="";
+
+            	phnNumInput.classList.remove("error-input");
+            }
+		}
+		
+		function validateEmailId(){
+			const emailIdInput=document.getElementById("emailid");
+			const emailIdError=document.getElementById("emailIdError");
+			const emailid=emailIdInput.value;
+			const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            console.log("e1");
+            if(!emailRegex.test(emailid)){
+            	emailIdError.innerText="Invalid Email Format";
+            	console.log("e2");
+            	emailIdInput.classList.add("error-input");
+            }
+            else{
+            	emailIdError.innerText="";
+            	console.log("e3");
+            	emailIdInput.classList.remove("error-input");
+            }
+            }
+		
+		
+		const firstNameInput = document.getElementById("firstName");
+		firstNameInput.addEventListener("blur", validateFirstName);
+		
+		const lastNameInput=document.getElementById("lastName");
+		lastNameInput.addEventListener("blur",validateLastName);
+		
+		const phnNumInput=document.getElementById("phnNum");
+		phnNumInput.addEventListener("blur",validatephnNum);
+		
+		const emailIdInput=document.getElementById("emailid");
+		emailIdInput.addEventListener("blur",validateEmailId);
+		
+
+		function registerUserEvent(event) {
+			event.preventDefault();
+			validateFirstName();
+			validateLastName();
+			validatephnNum();
+			validateEmailId();
+			registerUser();
+		}
+	</script>
+</body>
+</html>
